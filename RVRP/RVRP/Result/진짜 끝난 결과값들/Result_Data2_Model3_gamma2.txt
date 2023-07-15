@@ -1,0 +1,7 @@
+------------- Result -------------
+Time : 240.077 sec
+Number of gamma : 2
+Object value : 226.0
+Number of branch : 382989
+추가 Lazy 제약식 개수 : 259
+추가 LazyCut 제약식 개수 : 48

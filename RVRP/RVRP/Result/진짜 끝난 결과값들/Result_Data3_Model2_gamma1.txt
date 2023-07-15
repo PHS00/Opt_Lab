@@ -1,0 +1,6 @@
+------------- Result -------------
+Time : 127.208 sec
+Number of gamma : 1
+Object value : 223.0
+Number of branch : 111957
+추가 제약식 개수 : 406

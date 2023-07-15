@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename type &apos;MakeData.RVRP_Data&apos; to &apos;MakeDataInstance&apos;&#x0D;&#x0A;- Original project: &apos;Capstone&apos;&#x0D;&#x0A;- Original element: &apos;MakeData.RVRP_Data&apos;&#x0D;&#x0A;- Renamed element: &apos;MakeData.MakeDataInstance&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Update textual occurrences in comments and strings" description="Rename type &apos;RVRP_Data&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.type" input="/src&lt;MakeData{RVRP_Data.java[RVRP_Data" matchStrategy="1" name="MakeDataInstance" qualified="false" references="true" similarDeclarations="false" stamp="1685015454300" textual="false" version="1.0"/>
+</session>

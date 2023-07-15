@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename type &apos;Data.ProbabilitySP&apos; to &apos;ProbabilitySP_phs&apos;&#x0D;&#x0A;- Original project: &apos;Data&apos;&#x0D;&#x0A;- Original element: &apos;Data.ProbabilitySP&apos;&#x0D;&#x0A;- Renamed element: &apos;Data.ProbabilitySP_phs&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Update textual occurrences in comments and strings" description="Rename type &apos;ProbabilitySP&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.type" input="/Data&lt;Data{ProbabilitySP.java[ProbabilitySP" matchStrategy="1" name="ProbabilitySP_phs" qualified="false" references="true" similarDeclarations="false" stamp="1683009242641" textual="false" version="1.0"/>
+</session>

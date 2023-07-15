@@ -1,0 +1,222 @@
+package Data;
+import ilog.concert.*;
+import ilog.cplex.*;
+import ilog.cplex.IloCplex.UnknownObjectException;
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+
+public class App {
+	public static void result(String filePath, String fileName, String fileType, double time, double Obj, int nodes) {
+		try {
+			BufferedWriter fw = new BufferedWriter(new FileWriter(filePath+fileName+fileType, true));
+			fw.write(Double.toString(time));
+			fw.newLine();
+			fw.write(Double.toString(Obj));
+			fw.newLine();
+			fw.write(Integer.toString(nodes));
+			fw.newLine();
+			
+			fw.flush();
+			fw.close();
+		}
+		catch(Exception e) {
+			e.getStackTrace();
+		}
+	}
+
+	public static double Obj = 0;
+	public static int nodes = 0;
+	
+	public static void solveMe() {
+		String fileName = "RSPP_100_1";
+		String filePath = "C:\\Users\\``\\eclipse-workspace\\cplex\\result\\";
+		String fileType = ".txt";
+		try {
+			GetData.main(null);
+			
+			
+			
+			int s = GetData.s-1;
+			int d = GetData.d-1;
+			int n = GetData.nodenum;
+			int m = GetData.nodenum;
+			//System.out.println(s+" "+d);
+			
+			IloCplex cplex = new IloCplex();
+			
+			//결정변수 및 비음제약식
+			IloNumVar[][] x = new IloNumVar[n][m];
+			for(int i = 0; i < n; i++) {
+				x[i] = cplex.numVarArray(m, 0, 1, IloNumVarType.Int);
+			}
+			/*for(int i = 0; i < n; i++) {
+				for(int j=0; j<n; j++) {
+					x[i][j] = cplex.intVar(0, 1);
+				}
+			}*/
+			//목적함수
+			IloLinearNumExpr objective = cplex.linearNumExpr();
+			for(int i=0; i<n; i++) {
+				for(int j=0; j<n; j++) {
+					if(i!=j)
+							objective.addTerm(GetData.TravelTime[i][j], x[i][j]);
+				}
+			}
+			cplex.addMinimize(objective);
+			
+			//제약식
+			IloLinearNumExpr const1 = cplex.linearNumExpr();
+			for(int j=0; j<n; j++){
+				if(j!=s){
+					const1.addTerm(1.0, x[s][j]);
+					const1.addTerm(-1, x[j][s]);
+				}} 
+			cplex.addEq(const1, 1);
+			
+			IloLinearNumExpr const2 = cplex.linearNumExpr();
+			for(int j=0; j<n; j++){
+				if(j!=d){
+					const2.addTerm(1.0, x[j][d]);
+					const2.addTerm(-1,x[d][j]);
+				}}
+			cplex.addEq(const2, 1);
+			
+
+			for(int i=0; i<n; i++){
+				IloLinearNumExpr const3 = cplex.linearNumExpr();
+				if(i!=s && i!=d){
+					for(int j=0; j<n; j++){
+						if(i!=j){
+							const3.addTerm(1.0, x[i][j]);
+							const3.addTerm(-1.0, x[j][i]);
+						}
+					}
+				cplex.addEq(const3, 0);
+				}
+			}
+			
+			
+			//solve
+			long start = System.currentTimeMillis();
+			cplex.solve();
+			
+			double[][] xval = new double[n][m];
+			for(int i = 0; i < xval.length; i++) {
+				for(int j = 0; j < xval[i].length; j++) {
+					xval[i][j] = cplex.getValue(x[i][j]);
+				}
+			}
+			double[] pi = separation( xval, n, m);
+			
+			Obj = cplex.getObjValue();
+			nodes = cplex.getNnodes();
+			int sum=0;
+			for (int i = 0; i < n; i++) {
+		        for (int j = 0; j < n; j++) {
+		            if (i != j && cplex.getValue(x[i][j]) != 0) {
+		               System.out.println("i = " + i + ", j = " + j);
+		               sum+= GetData.TravelTime[i][j];
+		            }
+		        }
+		    }
+			//System.out.println(sum);
+			cplex.end();
+			long end = System.currentTimeMillis();
+			double time = (end - start) / 1000.0;
+			
+			System.out.println("실행시간 = " + time + "초");
+			System.out.println("목적함수 값 = " + Obj);
+			System.out.println("노드수 = " + nodes);
+			//System.out.println(s+" "+ d);
+			 
+			
+			//파일 생성
+			result(filePath, fileName, fileType, time, Obj, nodes);
+			
+		
+		}
+		catch(IloException exc) {
+			exc.printStackTrace();
+		}
+	}
+	public static double[] algo4( double[] x, int N, int[] source, int[] depot){
+		
+		double[] pi = new double[N];
+		double s = 0;
+		
+		for(int i = 0; i < N; i++) {
+			double alpha = GetData.StandardDeviation[source[i]][depot[i]];
+			double stdev = alpha * alpha;
+			pi[i] = Math.sqrt(s + stdev) - Math.sqrt(s);
+			s = s + stdev;
+			
+		}
+		
+		return pi;
+		
+	}
+	
+	public static double[] separation( double[][] xval, int n, int m) throws UnknownObjectException, IloException {
+		
+		int N = n*(n-1);
+		double[] x = new double[N];
+		int[] source = new int[N];
+		int[] depot = new int[N];
+		int index = 0;
+		for(int i = 0; i < n; i++) {
+			for(int j = 0; j < n; j++) {
+				if(i == j) continue;
+				x[index] = xval[i][j];
+				source[index] = i;
+				depot[index++] = j;
+			}
+		}
+
+		quickSort(x, 0, N-1, source, depot);
+		for(int i = 0; i < N; i++) {
+//			if(x[i] > 0.5)
+			System.out.println("(" + source[i] + "," + depot[i] + ")");
+			
+		}
+		
+		return algo4(x, N, source, depot);
+		
+	}
+
+	private static void quickSort(double[] x, int start, int end, int[] source, int[] depot) throws UnknownObjectException, IloException {
+		
+		if (x == null || x.length == 0)
+			return;
+		if (start >= end)
+			return;
+        double pivot = 0.;
+        int left = start;
+        int right = end;
+		pivot = x[left + (right - left) / 2];
+		while (left <= right) {
+			while (x[left] > pivot)	left++;
+			while (x[right] < pivot)	right--;
+			if (left <= right) {
+				double tmp = x[left];   
+				int tmpi = source[left] , tmpj = depot[left];
+		        
+		        x[left] = x[right];
+		        source[left] = source[right];
+		        depot[left] = depot[right];
+		        
+		        x[right] = tmp;
+		        source[right] = tmpi;
+		        depot[right] = tmpj;
+		        left++;
+		        right--;
+			}
+		}
+		
+        if(start<right) quickSort(x, start, right, source, depot);
+        if(end>left) quickSort(x, left, end, source, depot);
+
+    }
+	
+	
+}

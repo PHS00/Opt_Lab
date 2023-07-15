@@ -1,0 +1,6 @@
+------------- Result -------------
+Time : 3600.025 sec
+Number of gamma : 0
+Object value : 450.0
+Number of branch : 1708478
+추가 제약식 개수 : 13

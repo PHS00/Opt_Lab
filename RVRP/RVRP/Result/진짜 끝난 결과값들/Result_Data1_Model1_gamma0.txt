@@ -1,0 +1,5 @@
+------------- Result -------------
+Time : 7.377 sec
+Number of gamma : 0
+Object value : 450.0
+Number of branch : 12154

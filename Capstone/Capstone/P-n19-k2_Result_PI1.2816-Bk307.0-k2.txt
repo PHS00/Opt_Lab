@@ -1,0 +1,23 @@
+obj = 596.4193263963391
+PI : 1.2816 Bk : 307.0 k : 2
+1차량 이동경로 : 1 9	 TotalTime: 30분
+1차량 이동경로 : 9 18	 TotalTime: 65분
+1차량 이동경로 : 18 17	 TotalTime: 117분
+1차량 이동경로 : 17 4	 TotalTime: 177분
+1차량 이동경로 : 4 13	 TotalTime: 191분
+1차량 이동경로 : 13 15	 TotalTime: 230분
+1차량 이동경로 : 15 12	 TotalTime: 246분
+1차량 이동경로 : 12 5	 TotalTime: 278분
+1차량 이동경로 : 5 2	 TotalTime: 278분
+1차량 이동경로 : 2 7	 TotalTime: 301분
+1차량 이동경로 : 7 1	 TotalTime: 301분
+2차량 이동경로 : 1 11	 TotalTime: 28분
+2차량 이동경로 : 11 6	 TotalTime: 75분
+2차량 이동경로 : 6 14	 TotalTime: 103분
+2차량 이동경로 : 14 16	 TotalTime: 125분
+2차량 이동경로 : 16 10	 TotalTime: 181분
+2차량 이동경로 : 10 3	 TotalTime: 220분
+2차량 이동경로 : 3 8	 TotalTime: 282분
+2차량 이동경로 : 8 19	 TotalTime: 294분
+2차량 이동경로 : 19 1	 TotalTime: 295분
+실행시간 = 18.189초
